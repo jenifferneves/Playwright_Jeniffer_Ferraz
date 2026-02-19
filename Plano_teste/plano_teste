@@ -1,0 +1,121 @@
+Plano de Teste 
+
+API ServeRest com Testes
+
+1. Introdução
+A API ServeRest é uma ferramenta de estudo que simula as operações de um e-commerce, como cadastro de usuários, autenticação, gerenciamento de produtos e carrinhos de compras. Este plano de teste foi elaborado para garantir a qualidade funcional, segurança e desempenho da API, tanto sob uso normal quanto em cenários de carga.
+Como parte da abordagem de testes, estão incluídas validações manuais, testes automatizados e testes de performance. Para os testes automatizados, será utilizado o framework Playwright com Python, aproveitando sua capacidade de enviar requisições diretamente à API, possibilitando simulações completas de fluxos de usuário com autenticação, criação de dados e validação de respostas.
+
+2. Objetivo
+O objetivo deste plano é garantir que a API ServeRest:
+	• Funcione corretamente e retorne respostas adequadas, com códigos de status e dados esperados.
+	• Aplique corretamente as regras de segurança e permissões, como autenticação com token JWT e acesso restrito a usuários administradores.
+	• Mantenha estabilidade e bom desempenho, mesmo com múltiplos acessos simultâneos.
+	• Seja testada com diferentes abordagens:
+		· Funcionalmente, por meio de testes automatizados com Playwright, simulando fluxos reais de uso da API.
+		· Manualmente, para validações exploratórias.
+		· Em performance, com ferramentas como JMeter, para simulação de carga e análise de resposta em cenários com muitos usuários.
+
+3. Escopo
+Este plano de teste cobre as principais funcionalidades da API ServeRest, abrangendo:
+	• Validação de todos os verbos HTTP disponíveis nas rotas /usuarios, /login, /produtos e /carrinhos (GET, GET/{id}, POST, PUT, DELETE).
+Serão considerados diferentes tipos de testes para validar os fluxos da API:
+	• Testes Manuais: para validações exploratórias e cobertura básica.
+	• Testes Automatizados Funcionais com Playwright: simulando fluxos completos de API, como criação de usuário, login, cadastro e validação de produtos, usando autenticação com token.
+	• Testes de Performance com JMeter: para simular múltiplos acessos simultâneos às rotas mais críticas da aplicação.
+
+4. Estratégia de Teste
+A estratégia adotada será composta por três frentes principais:
+	• Testes Manuais
+		· Realizados via Postman, focando em rotas principais e comportamento geral da API.
+		· Incluem validações básicas de status code, resposta e mensagens de erro.
+	• Testes Automatizados Funcionais
+		· Desenvolvidos com Playwright (Python), utilizando sua API de requisições HTTP para testes de back-end.
+		· Serão automatizados fluxos como:
+			§ Criação e login de usuários com diferentes permissões.
+			§ Criação e validação de produtos.
+			§ Autenticação com token JWT e acesso a rotas protegidas.
+		· Esses testes também serão usados como base para regressão.
+	• Testes de Performance (com JMeter)
+		· Rota-alvo principal: /produtos
+		· Cargas simuladas: 10, 20 e 30 usuários simultâneos
+		· Métricas analisadas:
+			§ Tempo médio de resposta
+			§ Taxa de sucesso e erro
+			§ Throughput (requisições por segundo)
+			§ Comportamento sob estresse e limites de estabilidade
+	
+5. Pessoas Envolvidas
+	• Analista de Testes
+	• Desenvolvedor da API
+	• Gerente de Qualidade
+
+6. Priorização de Teste
+Alta Prioridade
+	• Autenticação e controle de acesso (/login, /usuarios)
+	• Operações críticas de produto e carrinho
+	• Testes de carga em endpoints mais acessados
+Média Prioridade
+	• Atualizações e permissões detalhadas de usuários
+Baixa Prioridade
+	• Consultas simples e filtros
+
+7. Candidatos para Automação
+São candidatos ideais para automação com o framework Playwright (Python):
+	• Login de usuários, com validação do token JWT e autenticação correta.
+	• Cadastro e listagem de produtos, com verificação da persistência e integridade dos dados.
+	• Fluxo completo de carrinho, incluindo criação, adição de produto, finalização e cancelamento de compra.
+	• Validação de acesso às rotas protegidas, garantindo que usuários sem token ou permissões não acessem dados restritos.
+	• Teste de listagem de produtos (GET /produtos) com uso em massa (validação funcional antes do teste de performance com JMeter).
+	
+8. Local dos Testes
+Ambiente remoto, acessando a API em seu ambiente público. Os testes de carga foram executados localmente para simular múltiplas requisições concorrentes em uma máquina com hardware limitado.
+
+9. Recursos Necessários
+Ambiente:
+	• Acesso local ou público à API ServeRest (rodando localmente em http://localhost:3000 ou ambiente hospedado)
+Ferramentas:
+	• Playwright (Python) – automação funcional via requisições HTTP
+	• Postman & Newman – testes exploratórios e execução rápida de coleções
+	• JMeter – testes de performance com múltiplos usuários simultâneos
+	• GitHub – versionamento dos scripts e documentação
+	• XMind ou Draw.io – documentação visual de fluxos de teste
+	• Jira (ou ferramenta similar) – gestão de tarefas e evidências
+	• Internet estável – para garantir execução dos testes em ambientes remotos
+	
+10. Critérios de Aceite
+	• Todas as requisições válidas devem retornar o status HTTP esperado (200, 201 ou 204 conforme a operação).
+	• Autenticação deve ser obrigatória via token JWT para acesso a rotas protegidas.
+	• Usuários sem permissão de administrador não devem conseguir manipular produtos.
+	• O carrinho deve aceitar operações completas: criação, adição de itens, finalização e cancelamento.
+	• Tempo médio de resposta nos testes automatizados com Playwright deve ser inferior a 2 segundos.
+	• Nos testes de carga com JMeter, pelo menos 95% das requisições devem ter sucesso com até 30 usuários simultâneos.
+	• Os testes automatizados com Playwright devem passar com 100% de sucesso antes da liberação.
+	
+11. Riscos
+	• Ambiente de testes limitado pode distorcer resultados de carga.
+	• Erros de permissão podem comprometer testes automatizados.
+	• Dados inconsistentes em testes simultâneos com carrinho.
+
+12. Divulgação dos Resultados
+	• Relatórios Diários: progresso e falhas notificadas para os envolvidos.
+	• Relatório Final: comparativo entre estado inicial e pós-correção, com métricas de performance.
+Para testes com JMeter, o relatório incluirá:
+	• Tempo médio de resposta
+	• Percentual de sucesso
+	• Gráficos de throughput e erro
+
+13. Cronograma
+FASE	DESCRIÇÃO	DURAÇÃO
+Planejamento	Definição de escopo e ferramentas	2 dias
+Configuração	Setup do ambiente, Playwright e JMeter	2 dias
+Testes Manuais	Validações básicas com Postman	3 dias
+Testes Automatizados	Implementação de scripts com Playwright	3 dias
+Regressão	Reexecução após correções	2 dias
+Análise Final	Relatório e análise dos dados	1 dia
+Total		13 dias
+
+14. Observações Complementares
+	• Os testes de carga em /produtos foram realizados com até 30 usuários simultâneos via JMeter. Acima disso, a máquina apresentou instabilidade, comprometendo os resultados.
+	• Os scripts de automação com Playwright executaram fluxos completos de usuário, desde o cadastro até a validação de produtos listados, com tempo de resposta dentro dos limites aceitáveis.
+	• Conforme o projeto evoluir, novas rotas e fluxos serão adicionados à suíte de testes automatizados e à matriz de performance.

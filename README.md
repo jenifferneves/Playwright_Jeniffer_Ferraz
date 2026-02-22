@@ -1,7 +1,5 @@
 ﻿Test_Sprint7_ServeRest
 
-Test_Sprint7_ServeRest
-
 Bem-vindo(a) ao repositório Test_Sprint7_ServeRest! Este projeto documenta a execução da Sprint 7, com foco em testes funcionais, automatizados e de performance na API ServeRest.
 
 O objetivo foi aplicar boas práticas de planejamento, automação de testes e análise de desempenho, utilizando ferramentas modernas do mercado.
